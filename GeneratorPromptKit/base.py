@@ -12,7 +12,7 @@ class GeneratorPromptKit:
         self.client = OpenAI(api_key=self.api_key.strip())
         self.topic_generation_function_template = topic_generation_function_template[0]
 
-    def generate_dataset(self, input_domain, num_topics, num_subtopics, num_questions, use_subtopic_index, subtopic_index):
+    def generate_dataset(self, input_domain, num_topics, num_subtopics, num_questions, use_subtopic_index=False, subtopic_index=None):
         self.topic_generation_function_template["parameters"]["properties"]["topic_array"]["minItems"] = num_topics
         self.topic_generation_function_template["parameters"]["properties"]["topic_array"]["maxItems"] = num_topics
         topics = self._extract_topics(input_domain, num_topics)
@@ -20,7 +20,11 @@ class GeneratorPromptKit:
         question_per_topic = num_questions//num_topics + 1
         for topic_index, topic in enumerate(tqdm(topics, desc="Generating Dataset")):
             for question_id in range(question_per_topic):
-                prompt = create_subtopic_and_question_extraction_prompt(topic, topic_index, num_subtopics, use_subtopic_index=use_subtopic_index, subtopic_index=subtopic_index)
+                prompt, prefix_prompt, prefix_response = create_subtopic_and_question_extraction_prompt(input_domain, num_topics, topic, topics, topic_index, num_subtopics, use_subtopic_index=use_subtopic_index, subtopic_index=subtopic_index)
+                messages = [{"role": "system", "content": "You're a helpful AI"}, {"role": "user", "content": prefix_prompt}, {"role": "assistant", "content": prefix_response}, {"role": "user", "content": prompt}]
+                question = send_query_to_llm(self.client, self.llm_model, messages)
+                print(question)
+                exit()
 
         return dataset
 
@@ -29,9 +33,3 @@ class GeneratorPromptKit:
         response = send_query_to_llm(self.client, self.llm_model, [{"role": "system", "content": "You're a Topic Generator."}, {"role": "user", "content": prompt}], topic_generation_function_template[0])["topic_array"]
         topics = [t["topic"] for t in response]
         return topics[:num_topics]
-
-    def _generate_question_answer(self, topic, subtopic):
-        prompt = create_generator_prompt(topic, subtopic)
-        response = send_query_to_llm(prompt, self.llm_model, self.api_key)
-        question, answer = parse_llm_response(response)
-        return question, answer

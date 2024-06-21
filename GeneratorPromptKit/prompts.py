@@ -13,6 +13,7 @@ def create_topic_extraction_prompt(input_domain, num_topics=10):
     return prompt
 
 def create_subtopic_and_question_extraction_prompt(input_domain, num_topics, topic, topic_list, topic_index, num_subtopics, use_subtopic_index=False, subtopic_index=None):
+    topic_index += 1
     prefix_prompt = f"""
     Input Domain: {input_domain}
 
@@ -21,7 +22,7 @@ def create_subtopic_and_question_extraction_prompt(input_domain, num_topics, top
     
     Then, extract the topic at Topic at Index - {topic_index}.
     """
-    topics_string = "\n".join(topic_list)
+    topics_string = "\n".join([str(i+1)+". "+t for i,t in enumerate(topic_list)])
     prefix_response = f"""
     List of Topics:
     {topics_string}
@@ -39,6 +40,7 @@ def create_subtopic_and_question_extraction_prompt(input_domain, num_topics, top
     if use_subtopic_index:
         if subtopic_index is None:
             raise Exception("Please provide subtopic_index")
+        subtopic_index += 1
         prompt += f"""
         Select the subtopic at index {subtopic_index} from the generated list.
 
@@ -54,8 +56,8 @@ def create_subtopic_and_question_extraction_prompt(input_domain, num_topics, top
 
         Now, Instructions for Question Generation:
         {random.choice(indirect_question_generators)}
-        {grounding_phrase}
         {random.choice(randomness_boosters)}
+        {grounding_phrase}
         """
 
     return prompt, prefix_prompt, prefix_response
