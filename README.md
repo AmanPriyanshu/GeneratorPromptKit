@@ -7,6 +7,19 @@ This is a Python library and framework for automated generator prompting and dat
 
 The key idea behind GeneratorPromptKit is to leverage the power of LLMs to generate diverse and relevant questions and answers based on a given input domain. By iteratively extracting topics and subtopics from the domain and using carefully crafted generator prompts, the library enables the creation of large-scale datasets with minimal human intervention.
 
+### Demo Generation Example
+
+| topic                 | subtopic            | question                                                                                    | answer                                                                                   |
+|-----------------------|---------------------|---------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| Internet of Things    | IoT Data Analytics  | How can leveraging insights from connected devices revolutionize decision-making processes in various industries?| By harnessing the power of IoT data analytics, organizations can gain real-time insights...|
+| Data Structures and Algorithms | Sorting Algorithms | How can the efficiency of sorting algorithms be further improved beyond traditional comparisons and swaps?     | One innovative approach to enhancing the efficiency of sorting algorithms beyond...       |
+| Operating Systems     | Memory Management   | How does efficient memory management contribute to the overall performance of an operating system?| Efficient memory management plays a crucial role in optimizing the performance of an...    |
+| Computer Networks     | Network Security    | How can we ensure the confidentiality and integrity of data transmitted over a network, especially in the presence of potential threats?  | To safeguard data during transmission, network security mechanisms like encryption,...    |
+| Operating Systems     | Memory Management   | How does the efficient utilization of resources contribute to the overall performance of a system?    | Efficient memory management plays a crucial role in optimizing system performance by...    |
+
+
+### Flowchart
+
 ```mermaid
 graph TD
     A[Input Domain] --> B[Extract Topics]
