@@ -23,5 +23,5 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
     ],
-    keywords='llm llms dataset-generation automated-prompting prompt-engineering diverse-dataset data-science data dataset data-automation synthetic-data-generation synthetic-data augmentation',
+    keywords='llm llms llm-training dataset-generation automated-prompt-engineering prompt-engineering diverse-data data-science data dataset synthetic-dataset-generation synthetic-data augmentation data-augmentation',
 )
