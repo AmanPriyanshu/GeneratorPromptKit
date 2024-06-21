@@ -52,7 +52,7 @@ question_generation_function_template = [
                     "minItems": 0,
                     "maxItems": 0,
                 },
-                "selected_topic": {
+                "selected_subtopic": {
                     "type": "string",
                     "description": "From the generated list of subtopics, the particular/selected subtopic"
                 },
@@ -61,12 +61,12 @@ question_generation_function_template = [
                     "description": "From the selected subtopic an expert question."
                 }
             },
-            "required": ["subtopic_array", "selected_topic", "question"]
+            "required": ["subtopic_array", "selected_subtopic", "question"]
         }
     }
 ]
 
-question_and_generation_function_template = [
+question_and_answer_generation_function_template = [
     {
         "name": "subtopic_question_and_expert_answer_generator",
         "description": "You are an expert assistant whose objective is to generate subtopics based on a given topic within a domain. Following which you've to generate a expert question based on a subtopic selected and also an expert answer. Essentially you generate subtopics, focused questions, and expert answers.",
@@ -90,7 +90,7 @@ question_and_generation_function_template = [
                     "minItems": 0,
                     "maxItems": 0,
                 },
-                "selected_topic": {
+                "selected_subtopic": {
                     "type": "string",
                     "description": "From the generated list of subtopics, the particular/selected subtopic"
                 },
@@ -103,7 +103,7 @@ question_and_generation_function_template = [
                     "description": "For the given question an expert answer."
                 }
             },
-            "required": ["subtopic_array", "selected_topic", "question", "answer"]
+            "required": ["subtopic_array", "selected_subtopic", "question", "answer"]
         }
     }
 ]
