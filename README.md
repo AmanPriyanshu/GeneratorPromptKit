@@ -97,6 +97,38 @@ df = pd.read_csv('computer_science_dataset.csv')
 print(df)
 ```
 
+### Detailed Usage
+
+The `generate_dataset` function is used to automatically generate a structured dataset containing questions and optionally answers, divided by topics and subtopics based on the specified input domain. This function is versatile for generating rich and diverse educational or research-oriented datasets, especially useful for machine learning and data analysis tasks.
+
+1. **input_domain (str)**
+   - **Description**: The broad area or field from which topics and subsequently questions will be generated. It sets the context for the entire dataset generation process.
+   - **Example**: "Computer Science", "Biology", "History"
+
+2. **num_topics (int)**
+   - **Description**: The number of distinct topics to extract from the input domain. This number dictates how many major categories will be considered when generating the dataset.
+   - **Example**: 5 (would generate a dataset across 5 different topics in the specified domain)
+
+3. **num_subtopics (int)**
+   - **Description**: The number of subtopics to be extracted for each topic. This parameter helps in drilling down into more specific areas within each main topic.
+   - **Example**: 3 (each topic will be further explored into 3 subtopics)
+
+4. **num_datapoints (int)**
+   - **Description**: The total number of data points (question-and-answer pairs or just questions, depending on other parameters) intended to be generated across all topics.
+   - **Example**: 100 (aims to create a total of 100 data points)
+
+5. **use_subtopic_index (bool, optional)**
+   - **Description**: A flag to decide whether to use a specific index for subtopics during the question generation. If set to True, the function will use the specific `subtopic_index` provided to focus question generation on a particular subtopic. 
+   - **Example**: True or False
+
+6. **subtopic_index (int, optional)**
+   - **Description**: Specifies the index of the subtopic to focus on if `use_subtopic_index` is True. This parameter is only required and used if `use_subtopic_index` is True.
+   - **Example**: 1 (focus on the second subtopic, as indexing typically starts at 0)
+
+7. **generate_answers (bool)**
+   - **Description**: Determines whether the dataset generation process should include answers for the generated questions. If set to False, only questions will be generated.
+   - **Example**: True (generate both questions and their corresponding answers)
+
 ## Performance
 
 For detailed benchmarks and experimental results, please refer to the original paper "GenQA: Generating Millions of Instructions from a Handful of Prompts" by Chen et al. GeneratorPromptKit was created as an inspiration from their work and aims to provide a practical implementation of the concepts and techniques discussed in the paper.
