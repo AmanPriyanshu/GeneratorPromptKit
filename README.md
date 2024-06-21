@@ -125,7 +125,7 @@ The `generate_dataset` function is used to automatically generate a structured d
    - **Description**: Specifies the index of the subtopic to focus on if `use_subtopic_index` is True. This parameter is only required and used if `use_subtopic_index` is True.
    - **Example**: 1 (focus on the second subtopic, as indexing typically starts at 0)
 
-7. **generate_answers (bool)**
+7. **generate_answers (bool, optional)**
    - **Description**: Determines whether the dataset generation process should include answers for the generated questions. If set to False, only questions will be generated.
    - **Example**: True (generate both questions and their corresponding answers)
 
