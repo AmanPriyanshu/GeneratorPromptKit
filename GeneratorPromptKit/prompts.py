@@ -12,12 +12,27 @@ def create_topic_extraction_prompt(input_domain, num_topics=10):
 
     return prompt
 
-def create_subtopic_and_question_extraction_prompt(topic, topic_index, num_subtopics, use_subtopic_index=False, subtopic_index=None):
+def create_subtopic_and_question_extraction_prompt(input_domain, num_topics, topic, topic_list, topic_index, num_subtopics, use_subtopic_index=False, subtopic_index=None):
+    prefix_prompt = f"""
+    Input Domain: {input_domain}
+
+    Instructions:
+    Extract a list of {num_topics} relevant topics from the given input domain. Ensure the topics are diverse and cover various aspects of the domain. 
+    
+    Then, extract the topic at Topic at Index - {topic_index}.
+    """
+    topics_string = "\n".join(topic_list)
+    prefix_response = f"""
+    List of Topics:
+    {topics_string}
+
+    Topic at Index - {topic_index}: {topic}
+    """
     prompt = f"""
     Topic at Index - {topic_index}: {topic}
 
     Instructions:
-    Generate a list of {num_subtopics} subtopics related to the given topic.
+    Generate a list of {num_subtopics} subtopics related to the given topic: {topic}.
     The subtopics should be specific and cover different facets of the main topic.
     """
 
@@ -43,4 +58,4 @@ def create_subtopic_and_question_extraction_prompt(topic, topic_index, num_subto
         {random.choice(randomness_boosters)}
         """
 
-    return prompt
+    return prompt, prefix_prompt, prefix_response

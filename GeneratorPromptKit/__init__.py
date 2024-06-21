@@ -1,1 +1,1 @@
-from base import GeneratorPromptKit
+from .base import GeneratorPromptKit

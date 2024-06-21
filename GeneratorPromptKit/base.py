@@ -10,33 +10,25 @@ class GeneratorPromptKit:
         self.api_key = api_key
         self.llm_model = "gpt-3.5-turbo"
         self.client = OpenAI(api_key=self.api_key.strip())
+        self.topic_generation_function_template = topic_generation_function_template[0]
 
-    def generate_dataset(self, input_domain, num_topics, num_subtopics, num_questions):
+    def generate_dataset(self, input_domain, num_topics, num_subtopics, num_questions, use_subtopic_index, subtopic_index):
+        self.topic_generation_function_template["parameters"]["properties"]["topic_array"]["minItems"] = num_topics
+        self.topic_generation_function_template["parameters"]["properties"]["topic_array"]["maxItems"] = num_topics
         topics = self._extract_topics(input_domain, num_topics)
         dataset = []
-
-        for topic in tqdm(topics, desc="Generating Dataset"):
-            subtopics = self._extract_subtopics(topic, num_subtopics)
-            for subtopic in subtopics:
-                question, answer = self._generate_question_answer(topic, subtopic)
-                dataset.append({"question": question, "answer": answer})
-
-                if len(dataset) >= num_questions:
-                    return dataset
+        question_per_topic = num_questions//num_topics + 1
+        for topic_index, topic in enumerate(tqdm(topics, desc="Generating Dataset")):
+            for question_id in range(question_per_topic):
+                prompt = create_subtopic_and_question_extraction_prompt(topic, topic_index, num_subtopics, use_subtopic_index=use_subtopic_index, subtopic_index=subtopic_index)
 
         return dataset
 
     def _extract_topics(self, input_domain, num_topics):
         prompt = create_topic_extraction_prompt(input_domain)
-        response = send_query_to_llm(self.client, self.llm_model, [{"role": "system", "content": "You're a Topic Generator."}, {"role": "user", "content": prompt}], topic_generation_function_template)
-        print(response)
+        response = send_query_to_llm(self.client, self.llm_model, [{"role": "system", "content": "You're a Topic Generator."}, {"role": "user", "content": prompt}], topic_generation_function_template[0])["topic_array"]
+        topics = [t["topic"] for t in response]
         return topics[:num_topics]
-
-    def _extract_subtopics(self, topic, num_subtopics):
-        prompt = create_subtopic_and_question_extraction_prompt(topic)
-        response = send_query_to_llm(prompt, self.llm_model, self.api_key)
-        subtopics = parse_llm_response(response)
-        return subtopics[:num_subtopics]
 
     def _generate_question_answer(self, topic, subtopic):
         prompt = create_generator_prompt(topic, subtopic)
