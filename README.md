@@ -80,13 +80,13 @@ Here's a basic example of how to use GeneratorPromptKit to generate a dataset:
 from generator_prompt_kit import GeneratorPromptKit
 
 # Initialize the GeneratorPromptKit
-gpk = GeneratorPromptKit(api_key='your_api_key')
+gpk = GeneratorPromptKit(api_key='your_openai_api_key')
 
 # Set the input domain
 input_domain = "Computer Science"
 
 # Generate the dataset
-dataset = gpk.generate_dataset(input_domain, num_topics=10, num_subtopics=5, num_questions=100)
+dataset = gpk.generate_dataset(input_domain, num_topics=10, num_subtopics=5, num_datapoints=100)
 
 # Save the dataset to a file
 dataset.save('computer_science_dataset.json')
