@@ -77,7 +77,7 @@ pip install generator-prompt-kit
 Here's a basic example of how to use GeneratorPromptKit to generate a dataset:
 
 ```python
-from generator_prompt_kit import GeneratorPromptKit
+from GeneratorPromptKit import GeneratorPromptKit
 
 # Initialize the GeneratorPromptKit
 gpk = GeneratorPromptKit(api_key='your_openai_api_key')
