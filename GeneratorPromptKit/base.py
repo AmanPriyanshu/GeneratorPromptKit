@@ -4,6 +4,8 @@ from tqdm import tqdm
 from .prompts import create_topic_extraction_prompt, create_subtopic_and_question_extraction_prompt
 from .llm_integration import send_query2gpt as send_query_to_llm
 from .function_templates import topic_generation_function_template, question_and_answer_generation_function_template, question_generation_function_template
+from .utils import GPKDataset
+import random
 
 class GeneratorPromptKit:
     def __init__(self, api_key):
@@ -28,7 +30,8 @@ class GeneratorPromptKit:
         topics = self._extract_topics(input_domain, num_topics)
         dataset = []
         question_per_topic = num_questions//num_topics + 1
-        for topic_index, topic in enumerate(tqdm(topics, desc="Generating Dataset")):
+        bar = tqdm(range(question_per_topic*len(topics)), desc="Generating Dataset")
+        for topic_index, topic in enumerate(topics):
             for question_id in range(question_per_topic):
                 prompt, prefix_prompt, prefix_response = create_subtopic_and_question_extraction_prompt(input_domain, num_topics, topic, topics, topic_index, num_subtopics, use_subtopic_index=use_subtopic_index, subtopic_index=subtopic_index)
                 messages = [{"role": "system", "content": "You're a helpful AI"}, {"role": "user", "content": prefix_prompt}, {"role": "assistant", "content": prefix_response}, {"role": "user", "content": prompt}]
@@ -38,9 +41,11 @@ class GeneratorPromptKit:
                 else:
                     response = send_query_to_llm(self.client, self.llm_model, messages, function_template=self.question_generation_function_template)
                     to_record = {"topic": topic, "subtopic": response["selected_subtopic"], "question": response["question"]}
-                print(to_record)
-                exit()
-        return dataset
+                dataset.append(to_record)
+                bar.update()
+        bar.close()
+        random.shuffle(dataset)
+        return GPKDataset(dataset)
 
     def _extract_topics(self, input_domain, num_topics):
         prompt = create_topic_extraction_prompt(input_domain)
