@@ -97,7 +97,31 @@ df = pd.read_csv('computer_science_dataset.csv')
 print(df)
 ```
 
-### Detailed Usage
+#### GeneratorPromptKit()
+
+
+The constructor `__init__` of the `GeneratorPromptKit` class initializes a new instance of the `GeneratorPromptKit` class, setting up the necessary configuration to interact with an LLM via the specified API. It prepares the system for subsequent calls to generate topics, subtopics, and Q&A pairs by configuring the API key, operational parameters like `temperature` and `pause for rate limiting`, and selecting the appropriate `language model`. 
+
+1. **api_key (str)**
+   - **Description**: The API key used to authenticate requests to the language model provider, such as OpenAI. This key is necessary for billing and access control when using the API.
+   - **Example**: "your_api_key_here"
+
+2. **temperature (float, optional)**
+   - **Description**: Controls the randomness of the output from the language model. A higher temperature results in more varied and sometimes more creative responses. A lower temperature produces more predictable and conservative outputs. This parameter is optional, with a default value of 0, indicating the most deterministic behavior.
+   - **Default**: 0
+   - **Example**: 0.7 (for more creativity in responses)
+
+3. **openai_rpm_seconds_pause (int, optional)**
+   - **Description**: Specifies the number of seconds to pause between successive requests to the OpenAI API. This is used to manage the rate of requests per minute (RPM) to conform to API rate limits and avoid overloading the service. This parameter is optional and has a default value set to manage typical usage scenarios effectively.
+   - **Default**: 5
+   - **Example**: 2 (for a faster rate of API calls, suitable when higher RPM limits are allowed)
+
+4. **llm_model (str, optional)**
+   - **Description**: The identifier for the specific language model to be used for generating prompts, topics, subtopics, questions, and answers. This parameter allows the user to specify different models that might be optimized for particular tasks or that offer different balances of speed, cost, and accuracy. The default model is "gpt-3.5-turbo", known for its efficiency and robustness.
+   - **Default**: "gpt-3.5-turbo"
+   - **Example**: "gpt-4" (if the user wishes to utilize a more advanced model, assuming it's available in the API)
+  
+#### generate_dataset
 
 The `generate_dataset` function is used to automatically generate a structured dataset containing questions and optionally answers, divided by topics and subtopics based on the specified input domain. This function is versatile for generating rich and diverse educational or research-oriented datasets, especially useful for machine learning and data analysis tasks.
 
