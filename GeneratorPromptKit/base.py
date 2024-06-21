@@ -8,11 +8,11 @@ from .utils import GPKDataset
 import random
 
 class GeneratorPromptKit:
-    def __init__(self, api_key, temperature=0, openai_rpm_seconds_pause=5):
+    def __init__(self, api_key, temperature=0, openai_rpm_seconds_pause=5, llm_model="gpt-3.5-turbo"):
         self.api_key = api_key
         self.temperature = temperature
         self.pause = openai_rpm_seconds_pause
-        self.llm_model = "gpt-3.5-turbo"
+        self.llm_model = llm_model
         self.client = OpenAI(api_key=self.api_key.strip())
         self.topic_generation_function_template = topic_generation_function_template[0]
         self.question_and_answer_generation_function_template = question_and_answer_generation_function_template[0]
