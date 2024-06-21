@@ -1,7 +1,7 @@
 # GeneratorPromptKit
 ### A Python Library and Framework for Automated Generator Prompting and Dataset Generation
 
-This is a Python library and framework for automated generator prompting and dataset generation using large language models (LLMs). Inspired by the work of Chen et al. in their paper "GenQA: Generating Millions of Instructions from a Handful of Prompts", this library provides a structured approach to creating diverse and high-quality datasets using a combination of generator prompts, topic extraction, and subtopic exploration.
+This is a Python library (https://pypi.org/project/generator-prompt-kit/) and framework for automated generator prompting and dataset generation using large language models (LLMs). Inspired by the work of Chen et al. in their paper "GenQA: Generating Millions of Instructions from a Handful of Prompts", this library provides a structured approach to creating diverse and high-quality datasets using a combination of generator prompts, topic extraction, and subtopic exploration.
 
 ## Overview
 
