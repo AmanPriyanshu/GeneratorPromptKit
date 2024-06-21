@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='generator-prompt-kit',
-    version='1.0.2',
+    version='1.0.3',
     packages=find_packages(),
     description='A Python Library for Automated Generator Prompting and Dataset Generation',
     long_description=open('README.md').read(),

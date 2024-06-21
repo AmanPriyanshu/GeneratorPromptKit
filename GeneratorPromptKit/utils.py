@@ -3,7 +3,7 @@ import pickle
 
 class GPKDataset:
     def __init__(self, array_of_dicts):
-        self.array_of_dicts = array_of_dicts
+        self.array_of_dicts = array_of_dicts #no dataframes
 
     def save(self, output_path):
         dataframe = pd.DataFrame(self.array_of_dicts)
