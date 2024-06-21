@@ -1,0 +1,213 @@
+Metadata-Version: 2.1
+Name: generator-prompt-kit
+Version: 1.0.3
+Summary: A Python Library for Automated Generator Prompting and Dataset Generation
+Home-page: http://github.com/AmanPriyanshu/GeneratorPromptKit
+Author: Aman Priyanshu and Supriti Vijay
+Author-email: amanpriyanshusms2001@gmail.com
+License: MIT
+Keywords: llm llms llm-training dataset-generation automated-prompt-engineering prompt-engineering diverse-data data-science data dataset synthetic-dataset-generation synthetic-data augmentation data-augmentation
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy==2.0.0
+Requires-Dist: openai==1.34.0
+Requires-Dist: pandas==2.2.2
+Requires-Dist: tqdm==4.66.4
+
+# GeneratorPromptKit
+### A Python Library and Framework for Automated Generator Prompting and Dataset Generation
+
+This is a Python library (https://pypi.org/project/generator-prompt-kit/) and framework for automated generator prompting and dataset generation using large language models (LLMs). Inspired by the work of Chen et al. in their paper "GenQA: Generating Millions of Instructions from a Handful of Prompts", this library provides a structured approach to creating diverse and high-quality datasets using a combination of generator prompts, topic extraction, and subtopic exploration.
+
+## Overview
+
+The key idea behind GeneratorPromptKit is to leverage the power of LLMs to generate diverse and relevant questions and answers based on a given input domain. By iteratively extracting topics and subtopics from the domain and using carefully crafted generator prompts, the library enables the creation of large-scale datasets with minimal human intervention.
+
+### Demo Generation Example
+
+| topic                 | subtopic            | question                                                                                    | answer                                                                                   |
+|-----------------------|---------------------|---------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| Internet of Things    | IoT Data Analytics  | How can leveraging insights from connected devices revolutionize decision-making processes in various industries?| By harnessing the power of IoT data analytics, organizations can gain real-time insights...|
+| Data Structures and Algorithms | Sorting Algorithms | How can the efficiency of sorting algorithms be further improved beyond traditional comparisons and swaps?     | One innovative approach to enhancing the efficiency of sorting algorithms beyond...       |
+| Operating Systems     | Memory Management   | How does efficient memory management contribute to the overall performance of an operating system?| Efficient memory management plays a crucial role in optimizing the performance of an...    |
+| Computer Networks     | Network Security    | How can we ensure the confidentiality and integrity of data transmitted over a network, especially in the presence of potential threats?  | To safeguard data during transmission, network security mechanisms like encryption,...    |
+| Operating Systems     | Memory Management   | How does the efficient utilization of resources contribute to the overall performance of a system?    | Efficient memory management plays a crucial role in optimizing system performance by...    |
+
+
+### Flowchart
+
+```mermaid
+graph TD
+    A[Input Domain] -->|Define Domain| B[Extract Topics]
+    B -->|List Topics| C[Iterate over Topics]
+    C -->|Select Topic| D[Extract Subtopics]
+    D -->|List Subtopics| E[Iterate over Subtopics]
+    E -->|Select Subtopic| F[Generate Questions and Answers]
+    F -->|Generate QA Pair| G[Store QA in Dataset]
+    G --> H{More Subtopics?}
+    H -- Yes --> E
+    H -- No --> I{More Topics?}
+    I -- Yes --> C
+    I -- No --> J[Output Dataset]
+
+    subgraph Topic Extraction
+        B
+    end
+
+    subgraph Subtopic Extraction
+        D
+    end
+
+    subgraph Question and Answer Generation
+        F
+    end
+
+    subgraph Dataset Storage
+        G
+    end
+
+    style Topic Extraction fill:#f9d,stroke:#333,stroke-width:2px
+    style Subtopic Extraction fill:#dbf,stroke:#333,stroke-width:2px
+    style Question and Answer Generation fill:#ffd,stroke:#333,stroke-width:2px
+    style Dataset Storage fill:#bdf,stroke:#333,stroke-width:2px
+```
+
+## Some Important Questions
+
+### 1. Why Generator Prompts?
+> When finetuning a Llama-3 8B base model, on Generator Prompt generated datasets, it meets or exceeds both WizardLM and Ultrachat on both knowledge-intensive leaderboard tasks as well as conversational evaluations.
+- [Source](https://arxiv.org/abs/2406.10323)
+
+### 2. What are Generator Prompts?
+> A generator prompt asks the model to enumerate a long list of execution paths, and then randomizes which paths get chosen.
+- [Source](https://x.com/tomgoldsteincs/status/1803865169543532867)
+
+## Features
+
+- **Automated Topic and Subtopic Extraction**: GeneratorPromptKit automatically extracts topics and subtopics from the input domain using LLMs, enabling efficient exploration of the domain space.
+- **Generator Prompts**: The library provides a set of carefully designed generator prompts that encourage diversity, creativity, and relevance in the generated questions and answers.
+- **Customizable Prompts**: Users can easily modify and extend the existing prompts or add their own prompts to suit their specific requirements.
+- **Randomness and Diversity**: GeneratorPromptKit incorporates randomness boosters and indirect question generators to enhance the diversity of the generated dataset.
+- **Integration with OpenAI API**: The library seamlessly integrates with the OpenAI API, allowing users to leverage their language models for dataset generation.
+
+## Installation
+
+To install GeneratorPromptKit, simply use pip:
+
+```bash
+pip install generator-prompt-kit
+```
+
+## Usage
+
+Here's a basic example of how to use GeneratorPromptKit to generate a dataset:
+
+```python
+from GeneratorPromptKit import GeneratorPromptKit
+import pandas as pd
+
+# Initialize the GeneratorPromptKit
+gpk = GeneratorPromptKit(api_key='your_openai_api_key')
+
+# Set the input domain
+input_domain = "Computer Science"
+
+# Generate the dataset
+dataset = gpk.generate_dataset(input_domain, num_topics=10, num_subtopics=5, num_datapoints=100)
+
+# Save the dataset to a file
+dataset.save('computer_science_dataset.csv')
+
+# Printing what has been generated
+df = pd.read_csv('computer_science_dataset.csv')
+print(df)
+```
+
+#### GeneratorPromptKit()
+
+
+The constructor `__init__` of the `GeneratorPromptKit` class initializes a new instance of the `GeneratorPromptKit` class, setting up the necessary configuration to interact with an LLM via the specified API. It prepares the system for subsequent calls to generate topics, subtopics, and Q&A pairs by configuring the API key, operational parameters like `temperature` and `pause for rate limiting`, and selecting the appropriate `language model`. 
+
+1. **api_key (str)**
+   - **Description**: The API key used to authenticate requests to the language model provider, such as OpenAI. This key is necessary for billing and access control when using the API.
+   - **Example**: "your_api_key_here"
+
+2. **temperature (float, optional)**
+   - **Description**: Controls the randomness of the output from the language model. A higher temperature results in more varied and sometimes more creative responses. A lower temperature produces more predictable and conservative outputs. This parameter is optional, with a default value of 0, indicating the most deterministic behavior.
+   - **Default**: 0
+   - **Example**: 0.7 (for more creativity in responses)
+
+3. **openai_rpm_seconds_pause (int, optional)**
+   - **Description**: Specifies the number of seconds to pause between successive requests to the OpenAI API. This is used to manage the rate of requests per minute (RPM) to conform to API rate limits and avoid overloading the service. This parameter is optional and has a default value set to manage typical usage scenarios effectively.
+   - **Default**: 5
+   - **Example**: 2 (for a faster rate of API calls, suitable when higher RPM limits are allowed)
+
+4. **llm_model (str, optional)**
+   - **Description**: The identifier for the specific language model to be used for generating prompts, topics, subtopics, questions, and answers. This parameter allows the user to specify different models that might be optimized for particular tasks or that offer different balances of speed, cost, and accuracy. The default model is "gpt-3.5-turbo", known for its efficiency and robustness.
+   - **Default**: "gpt-3.5-turbo"
+   - **Example**: "gpt-4" (if the user wishes to utilize a more advanced model, assuming it's available in the API)
+  
+#### generate_dataset
+
+The `generate_dataset` function is used to automatically generate a structured dataset containing questions and optionally answers, divided by topics and subtopics based on the specified input domain. This function is versatile for generating rich and diverse educational or research-oriented datasets, especially useful for machine learning and data analysis tasks.
+
+1. **input_domain (str)**
+   - **Description**: The broad area or field from which topics and subsequently questions will be generated. It sets the context for the entire dataset generation process.
+   - **Example**: "Computer Science", "Biology", "History"
+
+2. **num_topics (int)**
+   - **Description**: The number of distinct topics to extract from the input domain. This number dictates how many major categories will be considered when generating the dataset.
+   - **Example**: 5 (would generate a dataset across 5 different topics in the specified domain)
+
+3. **num_subtopics (int)**
+   - **Description**: The number of subtopics to be extracted for each topic. This parameter helps in drilling down into more specific areas within each main topic.
+   - **Example**: 3 (each topic will be further explored into 3 subtopics)
+
+4. **num_datapoints (int)**
+   - **Description**: The total number of data points (question-and-answer pairs or just questions, depending on other parameters) intended to be generated across all topics.
+   - **Example**: 100 (aims to create a total of 100 data points)
+
+5. **use_subtopic_index (bool, optional)**
+   - **Description**: A flag to decide whether to use a specific index for subtopics during the question generation. If set to True, the function will use the specific `subtopic_index` provided to focus question generation on a particular subtopic. 
+   - **Example**: True or False
+
+6. **subtopic_index (int, optional)**
+   - **Description**: Specifies the index of the subtopic to focus on if `use_subtopic_index` is True. This parameter is only required and used if `use_subtopic_index` is True.
+   - **Example**: 1 (focus on the second subtopic, as indexing typically starts at 0)
+
+7. **generate_answers (bool, optional)**
+   - **Description**: Determines whether the dataset generation process should include answers for the generated questions. If set to False, only questions will be generated.
+   - **Example**: True (generate both questions and their corresponding answers)
+
+## Performance
+
+For detailed benchmarks and experimental results, please refer to the original paper "GenQA: Generating Millions of Instructions from a Handful of Prompts" by Chen et al. GeneratorPromptKit was created as an inspiration from their work and aims to provide a practical implementation of the concepts and techniques discussed in the paper.
+
+## Cite our Work
+
+```
+@inproceedings{generator-prompt-kit,
+  title = {GeneratorPromptKit: A Python Library for Automated Generator Prompting and Dataset Generation},
+  author = {Aman Priyanshu, Supriti Vijay},
+  year = {2024},
+  publisher = {{GitHub}},
+  url = {https://github.com/AmanPriyanshu/GeneratorPromptKit}
+}
+
+```
+
+## References
+
+- Chen et al. "GenQA: Generating Millions of Instructions from a Handful of Prompts". arXiv preprint arXiv:2406.10323, 2024.
+
+## Contributing
+
+Contributions to GeneratorPromptKit are welcome! If you encounter any issues, have suggestions for improvements, or want to add new features, please open an issue or submit a pull request on the [GitHub repository](https://github.com/AmanPriyanshu/GeneratorPromptKit)
+
+## License
+
+GeneratorPromptKit is released under the [MIT License](/LICENSE).

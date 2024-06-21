@@ -1,0 +1,15 @@
+LICENSE
+README.md
+setup.py
+GeneratorPromptKit/__init__.py
+GeneratorPromptKit/base.py
+GeneratorPromptKit/function_templates.py
+GeneratorPromptKit/llm_integration.py
+GeneratorPromptKit/prompts.py
+GeneratorPromptKit/support.py
+GeneratorPromptKit/utils.py
+generator_prompt_kit.egg-info/PKG-INFO
+generator_prompt_kit.egg-info/SOURCES.txt
+generator_prompt_kit.egg-info/dependency_links.txt
+generator_prompt_kit.egg-info/requires.txt
+generator_prompt_kit.egg-info/top_level.txt
