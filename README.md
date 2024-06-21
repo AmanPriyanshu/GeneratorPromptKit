@@ -22,12 +22,17 @@ The key idea behind GeneratorPromptKit is to leverage the power of LLMs to gener
 
 ```mermaid
 graph TD
-    A[Input Domain] --> B[Extract Topics]
-    B --> C[Iterate over Topics]
-    C --> D[Extract Subtopics]
-    D --> E[Generate Questions and Answers]
-    E --> F[Store Generated Dataset]
-    F --> G[Output Dataset]
+    A[Input Domain] -->|Define Domain| B[Extract Topics]
+    B -->|List Topics| C[Iterate over Topics]
+    C -->|Select Topic| D[Extract Subtopics]
+    D -->|List Subtopics| E[Iterate over Subtopics]
+    E -->|Select Subtopic| F[Generate Questions and Answers]
+    F -->|Generate QA Pair| G[Store QA in Dataset]
+    G --> H{More Subtopics?}
+    H -- Yes --> E
+    H -- No --> I{More Topics?}
+    I -- Yes --> C
+    I -- No --> J[Output Dataset]
 
     subgraph Topic Extraction
         B
@@ -38,12 +43,17 @@ graph TD
     end
 
     subgraph Question and Answer Generation
-        E
+        F
+    end
+
+    subgraph Dataset Storage
+        G
     end
 
     style Topic Extraction fill:#f9d,stroke:#333,stroke-width:2px
     style Subtopic Extraction fill:#dbf,stroke:#333,stroke-width:2px
     style Question and Answer Generation fill:#ffd,stroke:#333,stroke-width:2px
+    style Dataset Storage fill:#bdf,stroke:#333,stroke-width:2px
 ```
 
 ## Features
