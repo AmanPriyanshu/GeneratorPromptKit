@@ -8,8 +8,10 @@ from .utils import GPKDataset
 import random
 
 class GeneratorPromptKit:
-    def __init__(self, api_key):
+    def __init__(self, api_key, temperature=0, openai_rpm_seconds_pause=5):
         self.api_key = api_key
+        self.temperature = temperature
+        self.pause = openai_rpm_seconds_pause
         self.llm_model = "gpt-3.5-turbo"
         self.client = OpenAI(api_key=self.api_key.strip())
         self.topic_generation_function_template = topic_generation_function_template[0]
@@ -36,10 +38,10 @@ class GeneratorPromptKit:
                 prompt, prefix_prompt, prefix_response = create_subtopic_and_question_extraction_prompt(input_domain, num_topics, topic, topics, topic_index, num_subtopics, use_subtopic_index=use_subtopic_index, subtopic_index=subtopic_index)
                 messages = [{"role": "system", "content": "You're a helpful AI"}, {"role": "user", "content": prefix_prompt}, {"role": "assistant", "content": prefix_response}, {"role": "user", "content": prompt}]
                 if generate_answers:
-                    response = send_query_to_llm(self.client, self.llm_model, messages, function_template=self.question_and_answer_generation_function_template)
+                    response = send_query_to_llm(self.client, self.llm_model, messages, function_template=self.question_and_answer_generation_function_template, temperature=self.temperature, pause=self.pause)
                     to_record = {"topic": topic, "subtopic": response["selected_subtopic"], "question": response["question"], "answer": response["answer"]}
                 else:
-                    response = send_query_to_llm(self.client, self.llm_model, messages, function_template=self.question_generation_function_template)
+                    response = send_query_to_llm(self.client, self.llm_model, messages, function_template=self.question_generation_function_template, temperature=self.temperature, pause=self.pause)
                     to_record = {"topic": topic, "subtopic": response["selected_subtopic"], "question": response["question"]}
                 dataset.append(to_record)
                 bar.update()
@@ -49,6 +51,6 @@ class GeneratorPromptKit:
 
     def _extract_topics(self, input_domain, num_topics):
         prompt = create_topic_extraction_prompt(input_domain)
-        response = send_query_to_llm(self.client, self.llm_model, [{"role": "system", "content": "You're a Topic Generator."}, {"role": "user", "content": prompt}], topic_generation_function_template[0])["topic_array"]
+        response = send_query_to_llm(self.client, self.llm_model, [{"role": "system", "content": "You're a Topic Generator."}, {"role": "user", "content": prompt}], topic_generation_function_template[0], temperature=self.temperature, pause=self.pause)["topic_array"]
         topics = [t["topic"] for t in response]
         return topics[:num_topics]
