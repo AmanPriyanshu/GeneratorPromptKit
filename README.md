@@ -56,6 +56,16 @@ graph TD
     style Dataset Storage fill:#bdf,stroke:#333,stroke-width:2px
 ```
 
+## Some Important Questions
+
+### 1. Why Generator Prompts?
+> When finetuning a Llama-3 8B base model, on Generator Prompt generated datasets, it meets or exceeds both WizardLM and Ultrachat on both knowledge-intensive leaderboard tasks as well as conversational evaluations.
+- [Source](https://arxiv.org/abs/2406.10323)
+
+### 2. What are Generator Prompts?
+> A generator prompt asks the model to enumerate a long list of execution paths, and then randomizes which paths get chosen.
+- [Source](https://x.com/tomgoldsteincs/status/1803865169543532867)
+
 ## Features
 
 - **Automated Topic and Subtopic Extraction**: GeneratorPromptKit automatically extracts topics and subtopics from the input domain using LLMs, enabling efficient exploration of the domain space.
