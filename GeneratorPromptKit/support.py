@@ -33,7 +33,7 @@ randomness_boosters = [
 
 grounding_phrase = "Ensure your response is relevant and focused to the subtopic and field at large, while being creative."
 
-indirects = [
+indirect_question_generators = [
 "Write a question that can only be answered by an expert in the subtopic, without mentioning the subtopic directly.",
 "Craft a question that requires specialized knowledge of the subtopic, but doesn't explicitly reference it.",
 "Generate a question that tests the depth of understanding in the subtopic, while avoiding its mention.",

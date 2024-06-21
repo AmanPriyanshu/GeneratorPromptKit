@@ -12,7 +12,7 @@ def create_topic_extraction_prompt(input_domain, num_topics=10):
 
     return prompt
 
-def create_subtopic_extraction_prompt(topic, topic_index, num_subtopics, use_subtopic_index=False, subtopic_index=None):
+def create_subtopic_and_question_extraction_prompt(topic, topic_index, num_subtopics, use_subtopic_index=False, subtopic_index=None):
     prompt = f"""
     Topic at Index - {topic_index}: {topic}
 
@@ -36,7 +36,7 @@ def create_subtopic_extraction_prompt(topic, topic_index, num_subtopics, use_sub
         prompt += f"""
         Randomly sample a subtopic from the generated list.
         State the randomly selected subtopic.
-        
+
         Now, Instructions for Question Generation:
         {random.choice(indirect_question_generators)}
         {grounding_phrase}

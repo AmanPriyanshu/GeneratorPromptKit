@@ -1,8 +1,9 @@
 import os
 from openai import OpenAI
 from tqdm import tqdm
-from .prompts import create_topic_extraction_prompt, create_subtopic_extraction_prompt
+from .prompts import create_topic_extraction_prompt, create_subtopic_and_question_extraction_prompt
 from .llm_integration import send_query2gpt as send_query_to_llm
+from .function_templates import topic_generation_function_template
 
 class GeneratorPromptKit:
     def __init__(self, api_key):
@@ -27,12 +28,12 @@ class GeneratorPromptKit:
 
     def _extract_topics(self, input_domain, num_topics):
         prompt = create_topic_extraction_prompt(input_domain)
-        response = send_query_to_llm(prompt, self.llm_model, self.api_key)
-        topics = parse_llm_response(response)
+        response = send_query_to_llm(self.client, self.llm_model, [{"role": "system", "content": "You're a Topic Generator."}, {"role": "user", "content": prompt}], topic_generation_function_template)
+        print(response)
         return topics[:num_topics]
 
     def _extract_subtopics(self, topic, num_subtopics):
-        prompt = create_subtopic_extraction_prompt(topic)
+        prompt = create_subtopic_and_question_extraction_prompt(topic)
         response = send_query_to_llm(prompt, self.llm_model, self.api_key)
         subtopics = parse_llm_response(response)
         return subtopics[:num_subtopics]
